@@ -1,0 +1,27 @@
+{
+  "name": "Model Creator",
+  "rootNode": {
+    "name": "Node 1",
+    "operation": 0,
+    "input": 0,
+    "linkedNodes": [
+      {
+        "name": "Node 2 1",
+        "operation": 2,
+        "input": 2,
+        "linkedNodes": [
+          {
+            "name": "Node 3 1",
+            "operation": 3,
+            "input": 3
+          }
+        ]
+      },
+      {
+        "name": "Node 2 2",
+        "operation": 2,
+        "input": 2
+      }
+    ]
+  }
+}
