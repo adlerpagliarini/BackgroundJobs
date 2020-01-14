@@ -9,6 +9,11 @@ using Hangfire.SqlServer;
 using BackgroundJobs.Data;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using BackgroundJobs.Services;
+using BackgroundJobs.Interfaces;
+using BackgroundJobs.Models;
+using System.Reflection;
+using System.Linq;
 
 namespace BackgroundJobs
 {
@@ -24,6 +29,26 @@ namespace BackgroundJobs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Assembly assembly = typeof(ModelExecution).Assembly;
+
+            foreach (var type in assembly.GetTypes()
+                .Where(t => t.IsClass && !t.IsAbstract))
+            {
+                foreach (var i in type.GetInterfaces())
+                {
+                    if (i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IExecution<>))
+                    {
+                        // NOTE: Due to a limitation of Microsoft.DependencyInjection we cannot 
+                        // register an open generic interface type without also having an open generic 
+                        // implementation type. So, we convert to a closed generic interface 
+                        // type to register.
+                        var interfaceType = typeof(IExecution<>).MakeGenericType(i.GetGenericArguments());
+                        services.AddScoped(interfaceType, type);
+                    }
+                }
+            } // https://stackoverflow.com/questions/48851985/make-net-core-di-auto-resolve-class-by-generic-interface-abstract-class-imple
+
+
             services.AddDbContext<ModelFlowContext>();
 
             services.AddSwaggerGen(c =>
