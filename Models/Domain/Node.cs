@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace BackgroundJobs.Models
+namespace BackgroundJobs.Models.Domain
 {
     public partial class Node
     {
@@ -11,19 +11,22 @@ namespace BackgroundJobs.Models
         public string Name { get; set; }
         public MathOperation Operation { get; set; }
         public long Input { get; set; }
-        public long? Output { get; set; }
+        public long? Output { get; protected set; }
         public List<Node> LinkedNodes { get; set; }
 
         public virtual Node ParentReference { get; set; }
 
-        public long ExecuteOperation(long input) => Operation switch
+        public void ExecuteOperation(long input)
         {
-            MathOperation.Addition => input + 2,
-            MathOperation.Division => input / 2,
-            MathOperation.Multiplication => input * 2,
-            MathOperation.Subtraction => input - 2,
-            _ => input
-        };
+            Output = Operation switch
+            {
+                MathOperation.Addition => input + 2,
+                MathOperation.Division => input / 2,
+                MathOperation.Multiplication => input * 2,
+                MathOperation.Subtraction => input - 2,
+                _ => input
+            };
+        }
 
         public Node()
         {

@@ -14,6 +14,7 @@ using BackgroundJobs.Interfaces;
 using BackgroundJobs.Models;
 using System.Reflection;
 using System.Linq;
+using BackgroundJobs.Commands.Handler;
 
 namespace BackgroundJobs
 {
@@ -29,7 +30,7 @@ namespace BackgroundJobs
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Assembly assembly = typeof(ModelExecution).Assembly;
+            Assembly assembly = typeof(ModelExecutionHandler).Assembly;
 
             foreach (var type in assembly.GetTypes()
                 .Where(t => t.IsClass && !t.IsAbstract))
@@ -50,6 +51,8 @@ namespace BackgroundJobs
 
 
             services.AddDbContext<ModelFlowContext>();
+
+            services.AddScoped<IPublisher, PublishHandler>();
 
             services.AddSwaggerGen(c =>
             {

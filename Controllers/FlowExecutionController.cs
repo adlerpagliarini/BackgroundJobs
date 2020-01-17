@@ -1,4 +1,6 @@
 ﻿using BackgroundJobs.Data;
+using BackgroundJobs.Interfaces;
+using BackgroundJobs.Models.Commands.Dtos;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -9,21 +11,18 @@ namespace BackgroundJobs.Controllers
     [Route("[controller]")]
     public class FlowExecutionController : ControllerBase
     {
-        private readonly ILogger<FlowExecutionController> _logger;
-        private readonly ModelFlowContext _modelFlowContext;
-        private readonly IBackgroundJobClient _hangFire;
+        private readonly IPublisher _publisher;
 
-        public FlowExecutionController(ILogger<FlowExecutionController> logger, ModelFlowContext modelFlowContext, IBackgroundJobClient hangFire)
+        public FlowExecutionController(IPublisher publisher)
         {
-            _logger = logger;
-            _modelFlowContext = modelFlowContext;
-            _hangFire = hangFire;
+            _publisher = publisher;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            //_hangFire.Enqueue(() => ModelExecution());
+            var message = new ModelExecution();
+            _publisher.PublishMessage(message);
             return Ok("Execution Started");
         }
     }

@@ -1,4 +1,4 @@
-﻿namespace BackgroundJobs.Models
+﻿namespace BackgroundJobs.Models.Domain
 {
     public enum MathOperation
     {

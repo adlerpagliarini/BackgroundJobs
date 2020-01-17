@@ -1,6 +1,7 @@
 ﻿using BackgroundJobs.Data;
 using BackgroundJobs.Interfaces;
 using BackgroundJobs.Models;
+using BackgroundJobs.Models.Domain;
 using BackgroundJobs.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

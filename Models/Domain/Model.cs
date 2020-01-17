@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BackgroundJobs.Models
+namespace BackgroundJobs.Models.Domain
 {
     public class Model
     {

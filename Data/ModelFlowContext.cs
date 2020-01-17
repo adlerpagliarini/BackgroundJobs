@@ -1,4 +1,5 @@
 ﻿using BackgroundJobs.Models;
+using BackgroundJobs.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
